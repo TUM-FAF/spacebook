@@ -1,9 +1,45 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-  "rulesDirectory": ["tslint-plugin-prettier"],
+  "defaultSeverity": "error",
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "jsRules": {
+    "no-unused-expression": true
+  },
   "rules": {
-    "prettier": true,
-    "interface-name": false,
-    "no-console": false
-  }
+    "deprecation": true,
+    "no-implicit-dependencies": [true, "dev", "optional"],
+    "no-submodule-imports": false,
+    "eofline": false,
+    "indent": false,
+    "member-access": [true, "no-public"],
+    "ordered-imports": [true],
+    "member-ordering": [false],
+    "curly": false,
+    "interface-name": [true],
+    "array-type": [false],
+    "no-empty-interface": false,
+    "prefer-conditional-expression": false,
+    "no-empty": false,
+    "arrow-parens": false,
+    "object-literal-sort-keys": false,
+    "no-unused-expression": false,
+    "max-classes-per-file": false,
+    "variable-name": [false],
+    "one-line": [false],
+    "one-variable-per-declaration": [false],
+    "promise-function-async": true,
+    "no-null-keyword": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "arrow-parameter",
+      "property-declaration",
+      "variable-declaration",
+      "member-variable-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ]
+  },
+  "rulesDirectory": []
 }
