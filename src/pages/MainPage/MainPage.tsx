@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { Logo } from '../../assets/icons/Logo';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 
 const PICTURES_TO_FETCH: number = 2;
@@ -40,8 +41,8 @@ export const MainPage: React.FC = (): React.ReactElement => {
   }
 
   return (
-    <div className="App">
-      Spacebook
+    <div className="App" style={{ fontFamily: 'DM Serif Display' }}>
+      <Logo />
       <InfiniteScroll
         pageStart={0}
         loadMore={loadFunc}
