@@ -14,7 +14,7 @@ export const Container: StyledComponent<'div', DefaultTheme> = styled.div`
 `;
 
 export const Title: StyledComponent<'div', DefaultTheme> = styled.div`
-  position: absolute;
+  position: relative;
   width: 200px;
   height: 240px;
   left: 40px;
