@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store/main';
+import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 
 const PICTURES_TO_FETCH: number = 2;
 
