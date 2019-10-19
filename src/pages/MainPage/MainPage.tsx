@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon';
 import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Header } from '../../components';
+import { Banner, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
+import * as s from './MainPage.styled';
 
 const PICTURES_TO_FETCH: number = 2;
 
@@ -41,8 +42,9 @@ export const MainPage: React.FC = (): React.ReactElement => {
   }
 
   return (
-    <div className="App" style={{ fontFamily: 'DM Serif Display' }}>
+    <s.Container>
       <Header />
+      <Banner />
       <InfiniteScroll
         pageStart={0}
         loadMore={loadFunc}
@@ -57,6 +59,6 @@ export const MainPage: React.FC = (): React.ReactElement => {
           <img src={imageObject.url} key={imageObject.date} />
         ))}
       </InfiniteScroll>
-    </div>
+    </s.Container>
   );
 };
