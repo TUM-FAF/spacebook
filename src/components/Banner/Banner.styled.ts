@@ -9,8 +9,8 @@ export const Container: StyledComponent<'div', DefaultTheme> = styled.div`
   background-size: contain;
   height: 400px;
   width: 100%;
-  margin-top: -30px;
-  margin-bottom: -70px;
+  margin-top: -60px;
+  margin-bottom: -130px;
 `;
 
 export const Title: StyledComponent<'div', DefaultTheme> = styled.div`

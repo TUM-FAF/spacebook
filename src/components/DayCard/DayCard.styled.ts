@@ -4,6 +4,7 @@ export const Container: StyledComponent<'div', DefaultTheme> = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  margin-top: 30px;
 `;
 
 export const Date: StyledComponent<'div', DefaultTheme> = styled.div`
