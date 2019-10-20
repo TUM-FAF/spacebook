@@ -18,7 +18,9 @@ export const MainPage: React.FC = (): React.ReactElement => {
     `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${urlDate}`;
 
   async function getImagePromise(url: string): Promise<IDayPicture> {
-    return fetch(url).then((res: Response) => res.json());
+    return fetch(url)
+      .then((res: Response) => res.json())
+      .catch((reason: any) => dispatch(mainActions.changeError(new Error(reason))));
   }
 
   async function getLastNImages(startDate: DateTime, n: number): Promise<IDayPicture[]> {
@@ -45,20 +47,26 @@ export const MainPage: React.FC = (): React.ReactElement => {
     <s.Container>
       <Header />
       <Banner />
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={loadFunc}
-        hasMore={true || false}
-        loader={
-          <div className="loader" key={0}>
-            Loading ...
-          </div>
-        }
-      >
-        {state.dayPictures.map((dayPicture: IDayPicture, index: number) => {
-          return <DayCard dayPicture={dayPicture} key={dayPicture.title + index} />;
-        })}
-      </InfiniteScroll>
+      {state.error ? (
+        <s.ErrorMessage>
+          Sorry. <br /> Too many requests. <br /> Try again later...
+        </s.ErrorMessage>
+      ) : (
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadFunc}
+          hasMore={true || false}
+          loader={
+            <div className="loader" key={0}>
+              Loading ...
+            </div>
+          }
+        >
+          {state.dayPictures.map((dayPicture: IDayPicture, index: number) => {
+            return <DayCard dayPicture={dayPicture} key={dayPicture.title + index} />;
+          })}
+        </InfiniteScroll>
+      )}
     </s.Container>
   );
 };

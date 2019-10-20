@@ -27,7 +27,7 @@
     "one-line": [false],
     "one-variable-per-declaration": [false],
     "promise-function-async": true,
-    "no-null-keyword": true,
+    "no-null-keyword": false,
     "typedef": [
       true,
       "call-signature",
