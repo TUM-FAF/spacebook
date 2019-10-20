@@ -12,7 +12,6 @@ export const Date: StyledComponent<'div', DefaultTheme> = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
-  text-transform: lowercase;
   color: #be0122;
   margin-bottom: 10px;
 `;
@@ -44,17 +43,17 @@ export const InfoContainer: StyledComponent<'div', DefaultTheme> = styled.div`
 export const Title: StyledComponent<'div', DefaultTheme> = styled.div`
   display: flex;
   flex-wrap: wrap;
-  font-size: 18px;
+  font-size: 19px;
   color: #ffffff;
 `;
 
 export const CopyRight: StyledComponent<'div', DefaultTheme> = styled.div`
-  font-size: 15px;
+  font-size: 16px;
   color: #818080;
   margin-bottom: 10px;
 `;
 
 export const Explanation: StyledComponent<'div', DefaultTheme> = styled.div`
-  font-size: 15px;
+  font-size: 14px;
   color: #ffffff;
 `;
