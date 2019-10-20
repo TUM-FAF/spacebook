@@ -47,8 +47,10 @@ export const MainPage: React.FC = (): React.ReactElement => {
     <s.Container>
       <Header />
       <Banner />
-      {!state.error ? (
-        <s.ErrorMessage>Sorry. <br/> Too many requests. <br/> Try again later...</s.ErrorMessage>
+      {state.error ? (
+        <s.ErrorMessage>
+          Sorry. <br /> Too many requests. <br /> Try again later...
+        </s.ErrorMessage>
       ) : (
         <InfiniteScroll
           pageStart={0}
