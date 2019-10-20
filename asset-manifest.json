@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/spacebook/static/js/main.fb23cbce.chunk.js",
+    "main.js.map": "/spacebook/static/js/main.fb23cbce.chunk.js.map",
+    "runtime-main.js": "/spacebook/static/js/runtime-main.98efcbba.js",
+    "runtime-main.js.map": "/spacebook/static/js/runtime-main.98efcbba.js.map",
+    "static/js/2.520e784e.chunk.js": "/spacebook/static/js/2.520e784e.chunk.js",
+    "static/js/2.520e784e.chunk.js.map": "/spacebook/static/js/2.520e784e.chunk.js.map",
+    "index.html": "/spacebook/index.html",
+    "precache-manifest.da8945df5b423885c66c4d2962277e51.js": "/spacebook/precache-manifest.da8945df5b423885c66c4d2962277e51.js",
+    "service-worker.js": "/spacebook/service-worker.js",
+    "static/media/banner.png": "/spacebook/static/media/banner.2b50f88b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.98efcbba.js",
+    "static/js/2.520e784e.chunk.js",
+    "static/js/main.fb23cbce.chunk.js"
+  ]
+}
