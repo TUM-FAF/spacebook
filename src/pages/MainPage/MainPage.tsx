@@ -13,7 +13,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
     Dispatch<ReducerAction<Reducer<IMainState, MainActionType>>>
   ] = useReducer(mainReducer, initialState);
 
-  const API_KEY: string = '1Hdx0DbpspSgdXGWxzf0hWbJfqEHEPRzwyIbP2Se';
+  const API_KEY: string = 'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z';
   const getURL: (urlDate: string) => string = (urlDate: string): string =>
     `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${urlDate}`;
 
@@ -45,21 +45,20 @@ export const MainPage: React.FC = (): React.ReactElement => {
     <s.Container>
       <Header />
       <Banner />
-      <DayCard />
-      {/*<InfiniteScroll*/}
-      {/*  pageStart={0}*/}
-      {/*  loadMore={loadFunc}*/}
-      {/*  hasMore={true || false}*/}
-      {/*  loader={*/}
-      {/*    <div className="loader" key={0}>*/}
-      {/*      Loading ...*/}
-      {/*    </div>*/}
-      {/*  }*/}
-      {/*>*/}
-      {/*  {state.dayPictures.map((imageObject: IDayPicture) => (*/}
-      {/*    <img src={imageObject.url} key={imageObject.date} />*/}
-      {/*  ))}*/}
-      {/*</InfiniteScroll>*/}
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadFunc}
+        hasMore={true || false}
+        loader={
+          <div className="loader" key={0}>
+            Loading ...
+          </div>
+        }
+      >
+        {state.dayPictures.map((dayPicture: IDayPicture, index: number) => {
+          return <DayCard dayPicture={dayPicture} key={dayPicture.title + index} />;
+        })}
+      </InfiniteScroll>
     </s.Container>
   );
 };

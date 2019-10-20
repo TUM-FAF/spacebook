@@ -1,6 +1,4 @@
 import styled, { DefaultTheme, StyledComponent } from 'styled-components';
-import BannerImage from '../../assets/resources/banner.png';
-
 
 export const Container: StyledComponent<'div', DefaultTheme> = styled.div`
   display: flex;
@@ -9,22 +7,26 @@ export const Container: StyledComponent<'div', DefaultTheme> = styled.div`
 `;
 
 export const Date: StyledComponent<'div', DefaultTheme> = styled.div`
-  margin-left: 30px;  
+  margin-left: 30px;
   font-family: DM Serif Display;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
   text-transform: lowercase;
-  color: #BE0122;
+  color: #be0122;
   margin-bottom: 10px;
 `;
 
-export const DayImageContainer: StyledComponent<'div', DefaultTheme> = styled.div`
+interface IDayImageContainerProps {
+  url: string;
+}
+
+export const DayImageContainer: StyledComponent<'div', DefaultTheme, IDayImageContainerProps> = styled.div`
   display: flex;
   height: 400px;
   max-width: 100%;
   min-width: 100%;
-  background-image: url("https://apod.nasa.gov/apod/image/1910/MWBolideEricWagner1200.jpg");
+  background-image: url(${(props: IDayImageContainerProps): string => props.url});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -32,34 +34,27 @@ export const DayImageContainer: StyledComponent<'div', DefaultTheme> = styled.di
 
 export const InfoContainer: StyledComponent<'div', DefaultTheme> = styled.div`
   max-width: 100%;
-  background: linear-gradient(180deg, rgba(23, 23, 28, 0) 0%, #17171C 100%);
+  background: linear-gradient(180deg, rgba(23, 23, 28, 0) 0%, #17171c 100%);
   padding: 20px 30px;
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 300;
 `;
 
-export const Title: StyledComponent<'div', DefaultTheme> = styled.div` 
+export const Title: StyledComponent<'div', DefaultTheme> = styled.div`
   display: flex;
   flex-wrap: wrap;
-  font-family: DM Serif Display;
-  font-style: normal;
-  font-weight: 300;
   font-size: 18px;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
-export const CopyRight: StyledComponent<'div', DefaultTheme> = styled.div` 
-  font-family: DM Serif Display;
-  font-style: normal;
-  font-weight: 300;
+export const CopyRight: StyledComponent<'div', DefaultTheme> = styled.div`
   font-size: 15px;
   color: #818080;
   margin-bottom: 10px;
 `;
 
-export const Explanation: StyledComponent<'div', DefaultTheme> = styled.div` 
-
-  font-family: DM Serif Display;
-  font-style: normal;
-  font-weight: 300;
+export const Explanation: StyledComponent<'div', DefaultTheme> = styled.div`
   font-size: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
