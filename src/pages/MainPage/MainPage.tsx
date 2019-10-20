@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Banner, Header } from '../../components';
+import { Banner, DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
 
@@ -45,20 +45,21 @@ export const MainPage: React.FC = (): React.ReactElement => {
     <s.Container>
       <Header />
       <Banner />
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={loadFunc}
-        hasMore={true || false}
-        loader={
-          <div className="loader" key={0}>
-            Loading ...
-          </div>
-        }
-      >
-        {state.dayPictures.map((imageObject: IDayPicture) => (
-          <img src={imageObject.url} key={imageObject.date} />
-        ))}
-      </InfiniteScroll>
+      <DayCard />
+      {/*<InfiniteScroll*/}
+      {/*  pageStart={0}*/}
+      {/*  loadMore={loadFunc}*/}
+      {/*  hasMore={true || false}*/}
+      {/*  loader={*/}
+      {/*    <div className="loader" key={0}>*/}
+      {/*      Loading ...*/}
+      {/*    </div>*/}
+      {/*  }*/}
+      {/*>*/}
+      {/*  {state.dayPictures.map((imageObject: IDayPicture) => (*/}
+      {/*    <img src={imageObject.url} key={imageObject.date} />*/}
+      {/*  ))}*/}
+      {/*</InfiniteScroll>*/}
     </s.Container>
   );
 };
