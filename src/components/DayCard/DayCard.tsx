@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
 import React from 'react';
+// @ts-ignore
+import ShowMoreText from 'react-show-more-text';
 import { IDayPicture } from '../../store';
 import * as s from './DayCard.styled';
 
@@ -9,7 +11,7 @@ interface IProps {
 
 export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement => {
   function readableDate(date: string): string {
-    return DateTime.fromISO(date).toFormat('dd LLL yyyy');
+    return DateTime.fromISO(date).toFormat('dd LLLL yyyy');
   }
 
   return (
@@ -18,8 +20,12 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement => 
       <s.DayImageContainer url={props.dayPicture.url} />
       <s.InfoContainer>
         <s.Title>{props.dayPicture.title}</s.Title>
-        <s.CopyRight>{props.dayPicture.copyright}</s.CopyRight>
-        <s.Explanation>{props.dayPicture.explanation}</s.Explanation>
+        {!!props.dayPicture.copyright && <s.CopyRight>Image Credit: {props.dayPicture.copyright}</s.CopyRight>}
+        <s.Explanation>
+          <ShowMoreText lines={1} more={'Show more'} less={'Show less'}>
+            {props.dayPicture.explanation}
+          </ShowMoreText>
+        </s.Explanation>
       </s.InfoContainer>
     </s.Container>
   );
