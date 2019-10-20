@@ -13,9 +13,24 @@ export const MainPage: React.FC = (): React.ReactElement => {
     Dispatch<ReducerAction<Reducer<IMainState, MainActionType>>>
   ] = useReducer(mainReducer, initialState);
 
-  const API_KEY: string = '4Z2WhZrhvwLUMNFzfu6JvctaPjU8DOocBnBMlVK8';
+  const API_KEYS: string[] = [
+    'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
+    '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
+    'XoaHgKExwK6bjYd1BbchJpib1PoslxNma7aXIcVe',
+    'NxgnY8Mudi14Z6zuwg8RirUWHoxkU51KP46mJZA7',
+    'RXKW6gmsO16zEBigThXE9RhsoYWDCyhY0o0ZWie0',
+    'MCVi30DjnwG4oKa4a5QAzU9HjgITrHAqJPTDzzk6',
+    'PhzLpPfsldCXdtJLbMoLrktZKno0hibGCQc3KM70',
+    'axuUMf6rO10GZyaKjR5hRJdqo5MeUV6uIJwKRivc',
+    'LtrdVP7MA8rcvJ8pNUPRKklKkgxeQo6bLKaerAKW',
+    'rlCkluhZENDgIKc6VORsuBI1nf848enHc8a9OMoe',
+    'kMSvVy4oYfXhiQxTI5axb91i0LdOE209ao3FitVa',
+  ];
+
   const getURL: (urlDate: string) => string = (urlDate: string): string =>
-    `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${urlDate}`;
+    `https://api.nasa.gov/planetary/apod?api_key=${
+      API_KEYS[Math.floor(Math.random() * API_KEYS.length)]
+    }&date=${urlDate}`;
 
   async function getImagePromise(url: string): Promise<IDayPicture> {
     return fetch(url)
