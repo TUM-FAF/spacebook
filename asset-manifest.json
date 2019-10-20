@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/spacebook/static/js/main.8e4bda2d.chunk.js",
-    "main.js.map": "/spacebook/static/js/main.8e4bda2d.chunk.js.map",
+    "main.js": "/spacebook/static/js/main.f64c6412.chunk.js",
+    "main.js.map": "/spacebook/static/js/main.f64c6412.chunk.js.map",
     "runtime-main.js": "/spacebook/static/js/runtime-main.98efcbba.js",
     "runtime-main.js.map": "/spacebook/static/js/runtime-main.98efcbba.js.map",
     "static/js/2.81cc76da.chunk.js": "/spacebook/static/js/2.81cc76da.chunk.js",
     "static/js/2.81cc76da.chunk.js.map": "/spacebook/static/js/2.81cc76da.chunk.js.map",
     "index.html": "/spacebook/index.html",
-    "precache-manifest.186a4865821892bdab36933c324fbf5b.js": "/spacebook/precache-manifest.186a4865821892bdab36933c324fbf5b.js",
+    "precache-manifest.b2c036a81aed0c52555e7491a2a7d405.js": "/spacebook/precache-manifest.b2c036a81aed0c52555e7491a2a7d405.js",
     "service-worker.js": "/spacebook/service-worker.js",
     "static/media/banner.png": "/spacebook/static/media/banner.2b50f88b.png"
   },
   "entrypoints": [
     "static/js/runtime-main.98efcbba.js",
     "static/js/2.81cc76da.chunk.js",
-    "static/js/main.8e4bda2d.chunk.js"
+    "static/js/main.f64c6412.chunk.js"
   ]
 }
