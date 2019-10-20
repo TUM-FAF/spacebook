@@ -9,7 +9,7 @@ export const Header: React.FC = (): React.ReactElement => {
     <s.Header>
       <Logo />
       <s.Moto>let's fly to stars</s.Moto>
-      <s.FAFLogo  src={FAFLogo}/>
+      <s.FAFLogo src={FAFLogo}/>
     </s.Header>
   );
 };
