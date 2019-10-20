@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a432be00c4b925ad81c6ff742cdc4957",
+    "revision": "d11231973323cb9f37664736d34f7b08",
     "url": "/spacebook/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/spacebook/static/js/2.520e784e.chunk.js"
   },
   {
-    "revision": "1c4d405fa7ddbc35ff9a",
-    "url": "/spacebook/static/js/main.fb23cbce.chunk.js"
+    "revision": "2d115b557e81ccc429d6",
+    "url": "/spacebook/static/js/main.ba8e7e56.chunk.js"
   },
   {
     "revision": "30579020141353351bd3",
