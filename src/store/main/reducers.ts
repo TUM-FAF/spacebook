@@ -6,11 +6,13 @@ import { IDayPicture } from './types';
 export interface IMainState {
   dayPictures: IDayPicture[];
   requestDate: DateTime;
+  error: Error | null;
 }
 
 export const initialState: IMainState = {
   dayPictures: [],
   requestDate: DateTime.local(),
+  error: null,
 };
 
 export function mainReducer(state: IMainState, action: MainActionType): IMainState {
@@ -19,6 +21,9 @@ export function mainReducer(state: IMainState, action: MainActionType): IMainSta
   }
   if (isActionOf(mainActions.updateRequestDate, action)) {
     return { ...state, requestDate: action.payload };
+  }
+  if (isActionOf(mainActions.changeError, action)) {
+    return { ...state, error: action.payload };
   }
   return state;
 }
