@@ -18,7 +18,7 @@ export const Title: StyledComponent<'div', DefaultTheme> = styled.div`
   width: 200px;
   height: 240px;
   left: 40px;
-  top: 130px;
+  top: 100px;
 
   font-family: DM Serif Display;
   font-style: normal;
