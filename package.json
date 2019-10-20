@@ -2,6 +2,7 @@
   "name": "spacebook",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://tum-faf.github.io/spacebook",
   "dependencies": {
     "@types/jest": "24.0.19",
     "@types/luxon": "^1.15.2",
@@ -22,7 +23,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose"
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix --format verbose",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +47,7 @@
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
     "@types/styled-components": "^4.1.19",
+    "gh-pages": "^2.1.1",
     "prettier": "^1.18.2",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
