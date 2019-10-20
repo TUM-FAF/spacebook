@@ -4,15 +4,15 @@ https://tum-faf.github.io/spacebook/
 
 App build at https://2019.spaceappschallenge.org.
 
-![image](https://user-images.githubusercontent.com/16056918/67159626-bc61c200-f34f-11e9-96bf-734e373645e4.png)
+![image](https://user-images.githubusercontent.com/16056918/67159760-d1d7eb80-f351-11e9-8910-e16f580d1f49.png)
 
 
 ## Team
 
-- [Dragoș Străinu FAF-151](https://github.com/strdr4605)
-- [Stanislav Spatari FAF-151](https://github.com/sspatari)
 - [Liviu Cernei FAF-161](https://github.com/LCernei)
 - [Adrian Covaci FAF-182](https://github.com/adrianncovaci)
+- [Dragoș Străinu FAF-151](https://github.com/strdr4605)
+- [Stanislav Spatari FAF-151](https://github.com/sspatari)
 - [Cristian Delinschi FAF-182](https://github.com/cristian-delinschi)
 - Design Credit: [Mihai Stăvilă](https://www.facebook.com/mihai.stavila)
 
