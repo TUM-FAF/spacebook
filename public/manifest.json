@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Spacebook",
+  "name": "Spacebook: Astronomy Picture of the Day",
   "icons": [
     {
       "src": "favicon.ico",
