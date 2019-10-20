@@ -13,7 +13,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
     Dispatch<ReducerAction<Reducer<IMainState, MainActionType>>>
   ] = useReducer(mainReducer, initialState);
 
-  const API_KEY: string = 'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z';
+  const API_KEY: string = '4Z2WhZrhvwLUMNFzfu6JvctaPjU8DOocBnBMlVK8';
   const getURL: (urlDate: string) => string = (urlDate: string): string =>
     `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${urlDate}`;
 
