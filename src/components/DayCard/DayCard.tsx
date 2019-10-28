@@ -16,10 +16,16 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
 
   return (
     <s.Container>
-      { isDayPicture(props.dayPicture) ? (
+      {isDayPicture(props.dayPicture) ? (
         <>
           <s.Date>{readableDate(props.dayPicture.date)}</s.Date>
-          <s.DayImageContainer url={props.dayPicture.url} />
+          {props.dayPicture.media_type === 'image' ? (
+            <s.DayImageContainer url={props.dayPicture.url} />
+          ) : (
+            <a href={props.dayPicture.url}>
+              <s.DayUrlContainer>This is a {props.dayPicture.media_type}. Follow link ...</s.DayUrlContainer>
+            </a>
+          )}
           <s.InfoContainer>
             <s.Title>{props.dayPicture.title}</s.Title>
             {!!props.dayPicture.copyright && <s.CopyRight>Image Credit: {props.dayPicture.copyright}</s.CopyRight>}
@@ -30,7 +36,7 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
             </s.Explanation>
           </s.InfoContainer>
         </>
-      ) : null }
+      ) : null}
     </s.Container>
   );
 };

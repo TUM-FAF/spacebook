@@ -3,6 +3,7 @@ export interface IDayPicture {
   explanation: string;
   url: string;
   title: string;
+  media_type: string;
   copyright?: string;
 }
 
