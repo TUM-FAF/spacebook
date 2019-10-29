@@ -22,7 +22,7 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
           {props.dayPicture.media_type === 'image' ? (
             <s.DayImageContainer url={props.dayPicture.url} />
           ) : (
-            <a href={props.dayPicture.url}>
+            <a target="_blank" rel="noopener noreferrer" href={props.dayPicture.url}>
               <s.DayUrlContainer>This is a {props.dayPicture.media_type}. Follow link ...</s.DayUrlContainer>
             </a>
           )}
