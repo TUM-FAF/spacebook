@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/spacebook/static/js/main.b1b04b01.chunk.js",
-    "main.js.map": "/spacebook/static/js/main.b1b04b01.chunk.js.map",
+    "main.js": "/spacebook/static/js/main.783d4bec.chunk.js",
+    "main.js.map": "/spacebook/static/js/main.783d4bec.chunk.js.map",
     "runtime-main.js": "/spacebook/static/js/runtime-main.98efcbba.js",
     "runtime-main.js.map": "/spacebook/static/js/runtime-main.98efcbba.js.map",
     "static/js/2.184aac9d.chunk.js": "/spacebook/static/js/2.184aac9d.chunk.js",
     "static/js/2.184aac9d.chunk.js.map": "/spacebook/static/js/2.184aac9d.chunk.js.map",
     "index.html": "/spacebook/index.html",
-    "precache-manifest.1a42e3d8b191e0bed5f5a7c55f56b1dd.js": "/spacebook/precache-manifest.1a42e3d8b191e0bed5f5a7c55f56b1dd.js",
+    "precache-manifest.1fe4b99dd6bd329b441b0692ca069db7.js": "/spacebook/precache-manifest.1fe4b99dd6bd329b441b0692ca069db7.js",
     "service-worker.js": "/spacebook/service-worker.js",
     "static/media/banner.png": "/spacebook/static/media/banner.2b50f88b.png",
     "static/media/faf_logo.png": "/spacebook/static/media/faf_logo.2c41f84a.png"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.98efcbba.js",
     "static/js/2.184aac9d.chunk.js",
-    "static/js/main.b1b04b01.chunk.js"
+    "static/js/main.783d4bec.chunk.js"
   ]
 }
