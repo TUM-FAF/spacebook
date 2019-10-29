@@ -32,6 +32,19 @@ export const DayImageContainer: StyledComponent<'div', DefaultTheme, IDayImageCo
   background-position: center;
 `;
 
+export const DayUrlContainer: StyledComponent<'div', DefaultTheme> = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  text-decoration: underline;
+  font-size: 25px;
+  height: 400px;
+  max-width: 100%;
+  min-width: 100%;
+`;
+
 export const InfoContainer: StyledComponent<'div', DefaultTheme> = styled.div`
   max-width: 100%;
   background: linear-gradient(180deg, rgba(23, 23, 28, 0) 0%, #17171c 100%);
