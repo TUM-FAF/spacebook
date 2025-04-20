@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
+import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { Banner, DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
@@ -33,54 +33,101 @@ export const MainPage: React.FC = (): React.ReactElement => {
     }&date=${urlDate}`;
 
   async function getImagePromise(url: string): Promise<IDayPicture> {
-    return fetch(url)
-      .then((res: Response) => res.json())
-      .catch((reason: any) => dispatch(mainActions.changeError(new Error(reason))));
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`API request failed with status: ${res.status}`);
+      }
+      return res.json();
+    } catch (error) {
+      console.error("Error fetching image:", error);
+      dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
+      throw error;
+    }
   }
 
   async function getLastNImages(startDate: DateTime, n: number): Promise<IDayPicture[]> {
-    const imagesPromise: Array<Promise<IDayPicture>> = [];
-    for (let i: number = 0; i < n; i++) {
-      const dateStr: string = startDate
-        .minus({ days: i })
-        .toFormat('yyyy-LL-dd')
-        .toString();
-      const url: string = getURL(dateStr);
-      imagesPromise.push(getImagePromise(url));
+    try {
+      const imagesPromise: Array<Promise<IDayPicture>> = [];
+      for (let i: number = 0; i < n; i++) {
+        const dateStr: string = startDate
+          .minus({ days: i })
+          .toFormat('yyyy-LL-dd')
+          .toString();
+        const url: string = getURL(dateStr);
+        imagesPromise.push(getImagePromise(url));
+      }
+      const imagesArray: IDayPicture[] = await Promise.all(imagesPromise);
+      return imagesArray;
+    } catch (error) {
+      console.error("Error getting images:", error);
+      dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
+      return [];
     }
-    const imagesArray: IDayPicture[] = await Promise.all(imagesPromise);
-    return imagesArray;
   }
 
-  async function loadFunc(): Promise<void> {
-    const images: IDayPicture[] = await getLastNImages(state.requestDate, PICTURES_TO_FETCH);
-    dispatch(mainActions.updateRequestDate(state.requestDate.minus({ days: PICTURES_TO_FETCH })));
-    dispatch(mainActions.addPictures(images));
-  }
+  const [isLoading, setIsLoading] = React.useState(false);
 
+  async function loadMoreImages(): Promise<void> {
+    if (isLoading || state.error) return;
+    
+    try {
+      setIsLoading(true);
+      console.log("Loading more images from date:", state.requestDate.toFormat('yyyy-LL-dd'));
+      
+      const images: IDayPicture[] = await getLastNImages(state.requestDate, PICTURES_TO_FETCH);
+      if (images.length > 0) {
+        dispatch(mainActions.addPictures(images));
+        dispatch(mainActions.updateRequestDate(state.requestDate.minus({ days: PICTURES_TO_FETCH })));
+      }
+    } catch (error) {
+      console.error("Failed to load more images:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  
+  useEffect(() => {
+    loadMoreImages();
+  }, []);
+  
   return (
     <s.Container>
       <Header />
       <Banner />
       {state.error ? (
         <s.ErrorMessage>
-          Sorry. <br /> Too many requests. <br /> Try again later...
+          Sorry. <br /> Too many requests or API error. <br /> Try again later...
         </s.ErrorMessage>
       ) : (
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={loadFunc}
-          hasMore={true || false}
-          loader={
-            <div className="loader" key={0}>
-              Loading ...
+        <div>
+          {state.dayPictures.length === 0 && isLoading ? (
+            <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7'}}>
+              Loading images...
             </div>
-          }
-        >
-          {state.dayPictures.map((dayPicture: IDayPicture, index: number) => {
-            return <DayCard dayPicture={dayPicture} key={dayPicture.title + index} />;
-          })}
-        </InfiniteScroll>
+          ) : (
+            <InfiniteScroll
+              dataLength={state.dayPictures.length}
+              next={loadMoreImages}
+              hasMore={true}
+              loader={
+                <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7'}} key="loading">
+                  Loading more images...
+                </div>
+              }
+              endMessage={
+                <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#868e96'}}>
+                  You've seen all available images!
+                </div>
+              }
+              scrollThreshold={0.9}
+            >
+              {state.dayPictures.map((dayPicture: IDayPicture, index: number) => (
+                <DayCard dayPicture={dayPicture} key={`${dayPicture.date}-${index}`} />
+              ))}
+            </InfiniteScroll>
+          )}
+        </div>
       )}
     </s.Container>
   );
