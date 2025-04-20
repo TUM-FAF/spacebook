@@ -1,19 +1,19 @@
 import { DateTime } from 'luxon';
-import { Dispatch, Reducer, ReducerState, useEffect, useReducer } from 'react'; 
+import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {DayCard, Header } from '../../components';
+import { DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
-import React from 'react';
 
-const PICTURES_TO_FETCH: number = 2;
+const PICTURES_TO_FETCH: number = 3; // Reduced to 1 at a time to reduce API load
+const RETRY_DELAY: number = 2000; // 2 seconds
 
 export const MainPage: React.FC = (): React.ReactElement => {
-  const [state, dispatch]: [
-    ReducerState<Reducer<IMainState, MainActionType>>,
-    Dispatch<MainActionType>
-  ] = useReducer(mainReducer, initialState);
+  const [state, dispatch] = useReducer(mainReducer, initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
+  // Use a single API key at a time and rotate through them if one fails
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
     '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
@@ -28,78 +28,123 @@ export const MainPage: React.FC = (): React.ReactElement => {
     'kMSvVy4oYfXhiQxTI5axb91i0LdOE209ao3FitVa',
   ];
 
-  const getURL: (urlDate: string) => string = (urlDate: string): string =>
-    `https://api.nasa.gov/planetary/apod?api_key=${
-      API_KEYS[Math.floor(Math.random() * API_KEYS.length)]
-    }&date=${urlDate}`;
+  // Track the current API key index
+  const [currentKeyIndex, setCurrentKeyIndex] = useState(0);
+
+  const getURL = (urlDate: string): string => {
+    return `https://api.nasa.gov/planetary/apod?api_key=${API_KEYS[currentKeyIndex]}&date=${urlDate}`;
+  };
+
+  // Function to rotate to the next API key
+  const rotateApiKey = () => {
+    setCurrentKeyIndex((prevIndex) => (prevIndex + 1) % API_KEYS.length);
+  };
 
   async function getImagePromise(url: string): Promise<IDayPicture> {
     try {
       const res = await fetch(url);
+      
+      if (res.status === 429) { // Too many requests
+        console.log("Rate limit hit, rotating API key");
+        rotateApiKey();
+        throw new Error("Rate limit exceeded");
+      }
+      
       if (!res.ok) {
         throw new Error(`API request failed with status: ${res.status}`);
       }
+      
       return res.json();
     } catch (error) {
       console.error("Error fetching image:", error);
-      dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
       throw error;
     }
   }
 
-  async function getLastNImages(startDate: DateTime, n: number): Promise<IDayPicture[]> {
+  async function getImage(dateStr: string): Promise<IDayPicture | null> {
     try {
-      const imagesPromise: Array<Promise<IDayPicture>> = [];
-      for (let i: number = 0; i < n; i++) {
-        const dateStr: string = startDate
-          .minus({ days: i })
-          .toFormat('yyyy-LL-dd')
-          .toString();
-        const url: string = getURL(dateStr);
-        imagesPromise.push(getImagePromise(url));
-      }
-      const imagesArray: IDayPicture[] = await Promise.all(imagesPromise);
-      return imagesArray;
+      const url = getURL(dateStr);
+      return await getImagePromise(url);
     } catch (error) {
-      console.error("Error getting images:", error);
-      dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
-      return [];
+      console.error(`Failed to get image for date ${dateStr}:`, error);
+      return null;
     }
   }
 
-  const [isLoading, setIsLoading] = React.useState(false);
-
   async function loadMoreImages(): Promise<void> {
-    if (isLoading || state.error) return;
+    if (isLoading) return;
     
     try {
       setIsLoading(true);
       console.log("Loading more images from date:", state.requestDate.toFormat('yyyy-LL-dd'));
       
-      const images: IDayPicture[] = await getLastNImages(state.requestDate, PICTURES_TO_FETCH);
-      if (images.length > 0) {
-        dispatch(mainActions.addPictures(images));
-        dispatch(mainActions.updateRequestDate(state.requestDate.minus({ days: PICTURES_TO_FETCH })));
+      const dateStr = state.requestDate.toFormat('yyyy-LL-dd');
+      const image = await getImage(dateStr);
+      
+      if (image) {
+        dispatch(mainActions.addPictures([image]));
+        dispatch(mainActions.updateRequestDate(state.requestDate.minus({ days: 1 })));
+        setRetryCount(0); // Reset retry count on success
+      } else {
+        // If failed but we haven't retried too many times, schedule another attempt
+        if (retryCount < API_KEYS.length) {
+          console.log(`Retrying with a different API key (attempt ${retryCount + 1})`);
+          setRetryCount(prev => prev + 1);
+          rotateApiKey();
+          
+          // Schedule retry
+          setTimeout(() => {
+            setIsLoading(false); // Reset loading state to allow retry
+          }, RETRY_DELAY);
+          return;
+        } else {
+          // If we've tried all keys and still failed
+          dispatch(mainActions.changeError(new Error("Failed after trying all API keys")));
+        }
       }
     } catch (error) {
       console.error("Failed to load more images:", error);
+      dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
     } finally {
       setIsLoading(false);
     }
   }
   
+  // Reset error and try again
+  const handleRetry = () => {
+    dispatch(mainActions.changeError(null));
+    setRetryCount(0);
+    loadMoreImages();
+  };
+  
+  // Load initial data
   useEffect(() => {
     loadMoreImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   return (
     <s.Container>
       <Header />
-      {/* <Banner /> */}
       {state.error ? (
-        <s.ErrorMessage>
-          Sorry. <br /> Too many requests or API error. <br /> Try again later...
-        </s.ErrorMessage>
+        <div style={{ textAlign: 'center', margin: '2rem 0' }}>
+          <div style={{ fontSize: '1.5rem', color: '#ff6b6b', marginBottom: '1rem' }}>
+            Sorry. <br /> Too many API requests. <br /> Try again later...
+          </div>
+          <button 
+            onClick={handleRetry} 
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#4dabf7',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Retry with different API key
+          </button>
+        </div>
       ) : (
         <div>
           {state.dayPictures.length === 0 && isLoading ? (
@@ -114,11 +159,6 @@ export const MainPage: React.FC = (): React.ReactElement => {
               loader={
                 <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7'}} key="loading">
                   Loading more images...
-                </div>
-              }
-              endMessage={
-                <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#868e96'}}>
-                  You've seen all available images!
                 </div>
               }
               scrollThreshold={0.9}

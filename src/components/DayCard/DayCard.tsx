@@ -1,42 +1,78 @@
 import { DateTime } from 'luxon';
-import React from 'react';
+import React, { useState } from 'react';
 // @ts-ignore
 import ShowMoreText from 'react-show-more-text';
 import { IDayPicture, INoPicture, isDayPicture } from '../../store';
-import * as s from './DayCard.styled';
+import Flip from "react-card-flip";
 
 interface IProps {
   dayPicture: IDayPicture | INoPicture;
 }
 
 export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | null => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  
   function readableDate(date: string): string {
     return DateTime.fromISO(date).toFormat('dd LLLL yyyy');
   }
 
+  const toggleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  if (!isDayPicture(props.dayPicture)) {
+    return null;
+  }
+
   return (
-    <s.Container>
-      {isDayPicture(props.dayPicture) ? (
-        <>
-          <s.Date>{readableDate(props.dayPicture.date)}</s.Date>
-          {props.dayPicture.media_type === 'image' ? (
-            <s.DayImageContainer url={props.dayPicture.url} />
-          ) : (
-            <a target="_blank" rel="noopener noreferrer" href={props.dayPicture.url}>
-              <s.DayUrlContainer>This is a {props.dayPicture.media_type}. Follow link ...</s.DayUrlContainer>
-            </a>
+    <div className="flex flex-col mt-[30px]">
+      <Flip isFlipped={isFlipped} flipDirection="horizontal">
+        {/* Front of the card (image) */}
+        <div onClick={toggleFlip} className="cursor-pointer w-full">
+  {props.dayPicture.media_type === 'image' ? (
+    <div 
+      className="h-90 bg-cover bg-center cursor-pointer"
+      style={{ backgroundImage: `url(${props.dayPicture.url})` }}
+    />
+  ) : (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href={props.dayPicture.url}
+      onClick={(e) => e.stopPropagation()}
+      className="flex items-center justify-center font-ibm h-90 text-white cursor-pointer p-4 border-l-1 border-r-1 border-t-1 border-b-1 border-white border-opacity-30"
+    >
+      This is a {props.dayPicture.media_type}. Follow link ...
+    </a>
+  )}
+</div>
+
+        {/* Back of the card (explanation) */}
+        <div className=" p-4 border-l-1 border-r-1 border-t-1 border-b-1 border-white border-opacity-30">
+        <div onClick={toggleFlip} className="cursor-pointer p-4 ">
+          <p className="font-ibm text-white opacity-75 text-[10px] text-justify">
+              {props.dayPicture.explanation}
+          </p>
+        </div>
+        </div>
+      </Flip>
+
+      {/* Info Container (always visible) */}
+      <div className="bg-accent mt-[16px]">
+        <div className="p-[12px]">
+          <p className="font-ibm text-dark font-normal text-[16px]">
+            {readableDate(props.dayPicture.date)}
+          </p>
+          <p className="font-ibm text-light font-bold text-[16px] mt-[3px]">
+            {props.dayPicture.title}
+          </p>
+          {!!props.dayPicture.copyright && (
+            <p className="font-ibm text-white  opacity-75 text-[8px] mt-[5px]">
+              IMAGE CREDIT: {props.dayPicture.copyright}
+            </p>
           )}
-          <s.InfoContainer>
-            <s.Title>{props.dayPicture.title}</s.Title>
-            {!!props.dayPicture.copyright && <s.CopyRight>Image Credit: {props.dayPicture.copyright}</s.CopyRight>}
-            <s.Explanation>
-              <ShowMoreText lines={1} more={'Show more'} less={'Show less'}>
-                {props.dayPicture.explanation}
-              </ShowMoreText>
-            </s.Explanation>
-          </s.InfoContainer>
-        </>
-      ) : null}
-    </s.Container>
+        </div>
+      </div>
+    </div>
   );
 };

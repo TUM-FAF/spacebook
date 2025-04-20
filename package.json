@@ -12,6 +12,7 @@
     "@vitejs/plugin-react-swc": "^3.9.0",
     "luxon": "^1.19.3",
     "react": "^19.1.0",
+    "react-card-flip": "^1.2.3",
     "react-dom": "^19.1.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-show-more-text": "^1.2.3",
