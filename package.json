@@ -28,7 +28,7 @@
     "dev": "vite",
     "serve": "vite preview",
     "test": "vitest",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist -b gh-pages" ,
     "test:coverage": "vitest run --coverage --watch=false"
   },
   "eslintConfig": {
