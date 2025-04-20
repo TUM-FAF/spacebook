@@ -15,3 +15,4 @@ export interface INoPicture {
 export function isDayPicture(dayPicture: IDayPicture | INoPicture): dayPicture is IDayPicture {
   return !!(dayPicture as IDayPicture).date;
 }
+
