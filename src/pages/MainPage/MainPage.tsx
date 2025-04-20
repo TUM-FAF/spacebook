@@ -5,11 +5,15 @@ import { DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
 
-const PICTURES_TO_FETCH: number = 3; 
+const PICTURES_TO_FETCH: number = 2; 
 const RETRY_DELAY: number = 1000; 
 
 export const MainPage: React.FC = (): React.ReactElement => {
-  const [state, dispatch] = useReducer(mainReducer, initialState);
+  const [state, dispatch] = useReducer(mainReducer, {
+    ...initialState,
+    // Start with yesterday's date to avoid requesting future dates
+    requestDate: DateTime.local().minus({ days: 1 })
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -27,13 +31,19 @@ export const MainPage: React.FC = (): React.ReactElement => {
     'kMSvVy4oYfXhiQxTI5axb91i0LdOE209ao3FitVa',
   ];
 
-
   const [currentKeyIndex, setCurrentKeyIndex] = useState(0);
+
+  const isDateInFuture = (date: DateTime): boolean => {
+    return date > DateTime.local();
+  };
+
+  const getSafeDate = (date: DateTime): DateTime => {
+    return isDateInFuture(date) ? DateTime.local().minus({ days: 1 }) : date;
+  };
 
   const getURL = (urlDate: string): string => {
     return `https://api.nasa.gov/planetary/apod?api_key=${API_KEYS[currentKeyIndex]}&date=${urlDate}`;
   };
-
 
   const rotateApiKey = () => {
     setCurrentKeyIndex((prevIndex) => (prevIndex + 1) % API_KEYS.length);
@@ -75,14 +85,15 @@ export const MainPage: React.FC = (): React.ReactElement => {
     
     try {
       setIsLoading(true);
-      console.log("Loading more images from date:", state.requestDate.toFormat('yyyy-LL-dd'));
       
-      let currentDate = state.requestDate;
+      let currentDate = getSafeDate(state.requestDate);
+      
+      console.log("Loading more images from date:", currentDate.toFormat('yyyy-LL-dd'));
+      
       const newImages: IDayPicture[] = [];
       let fetchedCount = 0;
       let errorOccurred = false;
       
-  
       for (let i = 0; i < PICTURES_TO_FETCH; i++) {
         const dateStr = currentDate.toFormat('yyyy-LL-dd');
         
@@ -106,7 +117,6 @@ export const MainPage: React.FC = (): React.ReactElement => {
       
       if (fetchedCount > 0) {
         dispatch(mainActions.addPictures(newImages));
-      
         dispatch(mainActions.updateRequestDate(currentDate));
         setRetryCount(0); 
       }
@@ -122,7 +132,6 @@ export const MainPage: React.FC = (): React.ReactElement => {
           }, RETRY_DELAY);
           return;
         } else {
-
           dispatch(mainActions.changeError(new Error("Failed after trying all API keys")));
         }
       }
@@ -134,14 +143,13 @@ export const MainPage: React.FC = (): React.ReactElement => {
     }
   }
   
-  // Reset error and try again
   const handleRetry = () => {
     dispatch(mainActions.changeError(null));
     setRetryCount(0);
+    dispatch(mainActions.updateRequestDate(DateTime.local().minus({ days: 1 })));
     loadMoreImages();
   };
   
-  // Load initial data
   useEffect(() => {
     loadMoreImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
