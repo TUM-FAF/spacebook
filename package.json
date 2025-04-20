@@ -1,9 +1,11 @@
 {
   "name": "spacebook",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://nelldino.github.io/spacebook/",
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.4",
     "@types/jest": "24.0.19",
     "@types/luxon": "^1.15.2",
     "@types/react-infinite-scroller": "^1.2.1",
@@ -14,6 +16,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-show-more-text": "^1.2.3",
     "styled-components": "^4.4.0",
+    "tailwindcss": "^4.1.4",
     "typesafe-actions": "^4.4.2",
     "vite": "^6.3.2",
     "vite-tsconfig-paths": "^5.1.4"

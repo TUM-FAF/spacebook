@@ -1,16 +1,17 @@
 import { DateTime } from 'luxon';
-import React, { Dispatch, Reducer, ReducerAction, ReducerState, useReducer, useEffect } from 'react';
+import { Dispatch, Reducer, ReducerState, useEffect, useReducer } from 'react'; 
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Banner, DayCard, Header } from '../../components';
+import {DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
+import React from 'react';
 
 const PICTURES_TO_FETCH: number = 2;
 
 export const MainPage: React.FC = (): React.ReactElement => {
   const [state, dispatch]: [
     ReducerState<Reducer<IMainState, MainActionType>>,
-    Dispatch<ReducerAction<Reducer<IMainState, MainActionType>>>
+    Dispatch<MainActionType>
   ] = useReducer(mainReducer, initialState);
 
   const API_KEYS: string[] = [
@@ -94,7 +95,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
   return (
     <s.Container>
       <Header />
-      <Banner />
+      {/* <Banner /> */}
       {state.error ? (
         <s.ErrorMessage>
           Sorry. <br /> Too many requests or API error. <br /> Try again later...
