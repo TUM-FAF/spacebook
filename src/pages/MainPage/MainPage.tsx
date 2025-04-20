@@ -5,15 +5,14 @@ import { DayCard, Header } from '../../components';
 import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
 
-const PICTURES_TO_FETCH: number = 3; // Reduced to 1 at a time to reduce API load
-const RETRY_DELAY: number = 2000; // 2 seconds
+const PICTURES_TO_FETCH: number = 3; 
+const RETRY_DELAY: number = 1000; 
 
 export const MainPage: React.FC = (): React.ReactElement => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Use a single API key at a time and rotate through them if one fails
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
     '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
@@ -28,14 +27,14 @@ export const MainPage: React.FC = (): React.ReactElement => {
     'kMSvVy4oYfXhiQxTI5axb91i0LdOE209ao3FitVa',
   ];
 
-  // Track the current API key index
+
   const [currentKeyIndex, setCurrentKeyIndex] = useState(0);
 
   const getURL = (urlDate: string): string => {
     return `https://api.nasa.gov/planetary/apod?api_key=${API_KEYS[currentKeyIndex]}&date=${urlDate}`;
   };
 
-  // Function to rotate to the next API key
+
   const rotateApiKey = () => {
     setCurrentKeyIndex((prevIndex) => (prevIndex + 1) % API_KEYS.length);
   };
@@ -78,27 +77,52 @@ export const MainPage: React.FC = (): React.ReactElement => {
       setIsLoading(true);
       console.log("Loading more images from date:", state.requestDate.toFormat('yyyy-LL-dd'));
       
-      const dateStr = state.requestDate.toFormat('yyyy-LL-dd');
-      const image = await getImage(dateStr);
+      let currentDate = state.requestDate;
+      const newImages: IDayPicture[] = [];
+      let fetchedCount = 0;
+      let errorOccurred = false;
       
-      if (image) {
-        dispatch(mainActions.addPictures([image]));
-        dispatch(mainActions.updateRequestDate(state.requestDate.minus({ days: 1 })));
-        setRetryCount(0); // Reset retry count on success
-      } else {
-        // If failed but we haven't retried too many times, schedule another attempt
+  
+      for (let i = 0; i < PICTURES_TO_FETCH; i++) {
+        const dateStr = currentDate.toFormat('yyyy-LL-dd');
+        
+        try {
+          const image = await getImage(dateStr);
+          
+          if (image) {
+            newImages.push(image);
+            fetchedCount++;
+          
+            currentDate = currentDate.minus({ days: 1 });
+          } else {
+            errorOccurred = true;
+            break;
+          }
+        } catch (error) {
+          errorOccurred = true;
+          break;
+        }
+      }
+      
+      if (fetchedCount > 0) {
+        dispatch(mainActions.addPictures(newImages));
+      
+        dispatch(mainActions.updateRequestDate(currentDate));
+        setRetryCount(0); 
+      }
+      
+      if (errorOccurred) {
         if (retryCount < API_KEYS.length) {
           console.log(`Retrying with a different API key (attempt ${retryCount + 1})`);
           setRetryCount(prev => prev + 1);
           rotateApiKey();
           
-          // Schedule retry
           setTimeout(() => {
-            setIsLoading(false); // Reset loading state to allow retry
+            setIsLoading(false); 
           }, RETRY_DELAY);
           return;
         } else {
-          // If we've tried all keys and still failed
+
           dispatch(mainActions.changeError(new Error("Failed after trying all API keys")));
         }
       }
