@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nelldino.github.io/spacebook/",
+  "homepage": "http://tum-faf.github.io/spacebook",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
     "@types/jest": "24.0.19",

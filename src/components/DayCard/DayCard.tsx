@@ -1,7 +1,5 @@
 import { DateTime } from 'luxon';
 import React, { useState } from 'react';
-// @ts-ignore
-import ShowMoreText from 'react-show-more-text';
 import { IDayPicture, INoPicture, isDayPicture } from '../../store';
 import Flip from "react-card-flip";
 
