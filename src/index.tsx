@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { MainPage } from './pages';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<MainPage />, document.getElementById('root'));
+// Create a root element
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// Use the render method on the root element
+root.render(<MainPage />);
+
 serviceWorker.unregister();
