@@ -28,4 +28,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages          
-          folder: dist              
+          folder: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
