@@ -29,5 +29,4 @@ jobs:
         with:
           branch: gh-pages          
           folder: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
