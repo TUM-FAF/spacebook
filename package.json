@@ -8,6 +8,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "@types/jest": "^29.5.14",
     "@types/luxon": "^3.6.2",
+    "@typescript-eslint/parser": "^8.31.0",
     "@vitejs/plugin-react-swc": "^3.9.0",
     "luxon": "^3.6.1",
     "react": "^19.1.0",
@@ -29,9 +30,6 @@
     "test:coverage": "vitest run --coverage --watch=false",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -49,15 +47,16 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/styled-components": "^4.1.19",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@vitejs/plugin-react": "^4.4.1",
     "@vitest/coverage-v8": "^3.1.1",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react": "^7.37.5",
     "file-loader": "^6.2.0",
     "gh-pages": "^6.3.0",
     "jsdom": "^26.1.0",
     "prettier": "^2.8.8",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.1.0",
     "typescript": "^5.8.3",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "^3.1.1"
