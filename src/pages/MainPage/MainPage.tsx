@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
-import { IDayPicture, IMainState, initialState, mainActions, MainActionType, mainReducer } from '../../store';
+import { IDayPicture, initialState, mainActions,  mainReducer } from '../../store';
 import * as s from './MainPage.styled';
 
 const PICTURES_TO_FETCH: number = 2; 

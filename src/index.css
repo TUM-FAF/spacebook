@@ -7,5 +7,18 @@
     --color-accent: #ff521f;
     --color-dark: #010102;
     --color-light: #eae0D4;
-    --color-white: #ffffff
+    --color-white: #ffffff;
+    --my-rotation: 180deg;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
   }
