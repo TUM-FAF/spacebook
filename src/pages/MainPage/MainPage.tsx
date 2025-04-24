@@ -2,17 +2,17 @@ import { DateTime } from 'luxon';
 import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
-import { IDayPicture, initialState, mainActions,  mainReducer } from '../../store';
+import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
 import * as s from './MainPage.styled';
 
-const PICTURES_TO_FETCH: number = 2; 
-const RETRY_DELAY: number = 1000; 
+const PICTURES_TO_FETCH = 2;
+const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {
   const [state, dispatch] = useReducer(mainReducer, {
     ...initialState,
     // Start with yesterday's date to avoid requesting future dates
-    requestDate: DateTime.local().minus({ days: 1 })
+    requestDate: DateTime.local().minus({ days: 1 }),
   });
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
@@ -52,20 +52,21 @@ export const MainPage: React.FC = (): React.ReactElement => {
   async function getImagePromise(url: string): Promise<IDayPicture> {
     try {
       const res = await fetch(url);
-      
-      if (res.status === 429) { // Too many requests
-        console.log("Rate limit hit, rotating API key");
+
+      if (res.status === 429) {
+        // Too many requests
+        console.log('Rate limit hit, rotating API key');
         rotateApiKey();
-        throw new Error("Rate limit exceeded");
+        throw new Error('Rate limit exceeded');
       }
-      
+
       if (!res.ok) {
         throw new Error(`API request failed with status: ${res.status}`);
       }
-      
-      return res.json();
+
+      return res.json() as Promise<IDayPicture>;
     } catch (error) {
-      console.error("Error fetching image:", error);
+      console.error('Error fetching image:', error);
       throw error;
     }
   }
@@ -82,79 +83,79 @@ export const MainPage: React.FC = (): React.ReactElement => {
 
   async function loadMoreImages(): Promise<void> {
     if (isLoading) return;
-    
+
     try {
       setIsLoading(true);
-      
+
       let currentDate = getSafeDate(state.requestDate);
-      
-      console.log("Loading more images from date:", currentDate.toFormat('yyyy-LL-dd'));
-      
+
+      console.log('Loading more images from date:', currentDate.toFormat('yyyy-LL-dd'));
+
       const newImages: IDayPicture[] = [];
       let fetchedCount = 0;
       let errorOccurred = false;
-      
+
       for (let i = 0; i < PICTURES_TO_FETCH; i++) {
         const dateStr = currentDate.toFormat('yyyy-LL-dd');
-        
+
         try {
           const image = await getImage(dateStr);
-          
+
           if (image) {
             newImages.push(image);
             fetchedCount++;
-          
+
             currentDate = currentDate.minus({ days: 1 });
           } else {
             errorOccurred = true;
             break;
           }
-        } catch (error) {
+        } catch {
           errorOccurred = true;
           break;
         }
       }
-      
+
       if (fetchedCount > 0) {
         dispatch(mainActions.addPictures(newImages));
         dispatch(mainActions.updateRequestDate(currentDate));
-        setRetryCount(0); 
+        setRetryCount(0);
       }
-      
+
       if (errorOccurred) {
         if (retryCount < API_KEYS.length) {
           console.log(`Retrying with a different API key (attempt ${retryCount + 1})`);
-          setRetryCount(prev => prev + 1);
+          setRetryCount((prev) => prev + 1);
           rotateApiKey();
-          
+
           setTimeout(() => {
-            setIsLoading(false); 
+            setIsLoading(false);
           }, RETRY_DELAY);
           return;
         } else {
-          dispatch(mainActions.changeError(new Error("Failed after trying all API keys")));
+          dispatch(mainActions.changeError(new Error('Failed after trying all API keys')));
         }
       }
     } catch (error) {
-      console.error("Failed to load more images:", error);
+      console.error('Failed to load more images:', error);
       dispatch(mainActions.changeError(error instanceof Error ? error : new Error(String(error))));
     } finally {
       setIsLoading(false);
     }
   }
-  
+
   const handleRetry = () => {
     dispatch(mainActions.changeError(null));
     setRetryCount(0);
     dispatch(mainActions.updateRequestDate(DateTime.local().minus({ days: 1 })));
-    loadMoreImages();
+    void loadMoreImages();
   };
-  
+
   useEffect(() => {
-    loadMoreImages();
+    void loadMoreImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <s.Container>
       <Header />
@@ -163,15 +164,15 @@ export const MainPage: React.FC = (): React.ReactElement => {
           <div style={{ fontSize: '1.5rem', color: '#ff6b6b', marginBottom: '1rem' }}>
             Sorry. <br /> Too many API requests. <br /> Try again later...
           </div>
-          <button 
-            onClick={handleRetry} 
+          <button
+            onClick={handleRetry}
             style={{
               padding: '0.5rem 1rem',
               backgroundColor: '#4dabf7',
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Retry with different API key
@@ -180,7 +181,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
       ) : (
         <div>
           {state.dayPictures.length === 0 && isLoading ? (
-            <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7'}}>
+            <div style={{ fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7' }}>
               Loading images...
             </div>
           ) : (
@@ -189,7 +190,10 @@ export const MainPage: React.FC = (): React.ReactElement => {
               next={loadMoreImages}
               hasMore={true}
               loader={
-                <div style={{fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7'}} key="loading">
+                <div
+                  style={{ fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7' }}
+                  key="loading"
+                >
                   Loading more images...
                 </div>
               }
