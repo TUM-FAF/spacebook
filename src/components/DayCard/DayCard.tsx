@@ -22,34 +22,48 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
   }
 
   return (
-<div className="flex flex-col mt-[30px] m-8" onClick={toggleFlip}>
-  {flip ? (
-    // Back of the card
-    <div className="p-4 border border-white border-opacity-30 cursor-pointer hover:scale-105 transform-3d perspective-[1000px] rotate-y-12">
-      <p className="font-ibm text-white opacity-75 text-[10px] text-justify">
-        {props.dayPicture.explanation}
-      </p>
-    </div>
-  ) : (
-    // Front of the card
-    props.dayPicture.media_type === 'image' ? (
-      <div 
-        className="h-90 bg-cover bg-center cursor-pointer"
-        style={{ backgroundImage: `url(${props.dayPicture.url})` }}
-      />
-    ) : (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={props.dayPicture.url}
-        onClick={(e) => e.stopPropagation()}
-        className="flex items-center justify-center font-ibm h-90 text-white cursor-pointer p-4 border border-white border-opacity-30"
+<div>
+  <div className='flex flex-col mt-[35px] m-2'>
+  <div
+      className='h-90 w-90 [perspective:1000px] cursor-pointer'
+      onClick={toggleFlip}
+    >
+      <div
+        className={`relative h-90 transition-transform duration-1000 [transform-style:preserve-3d] ${
+          flip ? '[transform:rotateY(180deg)]' : ''
+        }`}
       >
-        This is a {props.dayPicture.media_type}. Follow link ...
-      </a>
-    )
-  )}
+        {/* Front */}
+        {props.dayPicture.media_type === 'image' ? (
+  <div className="absolute inset-0 [backface-visibility:hidden]">
+    <img
+      className="object-cover h-90 w-full"
+      src={props.dayPicture.url}
+      alt="NASA Pic"
+    />
+  </div>
+) : (
+  <a
+    target="_blank"
+    rel="noopener noreferrer"
+    href={props.dayPicture.url}
+    onClick={(e) => e.stopPropagation()}
+    className="block h-90 w-full"
+  >
+    <p className="font-ibm text-white p-4 border border-white h-full w-full text-center flex items-center justify-center text-[16px]">
+      This is a {props.dayPicture.media_type}. Follow link...
+    </p>
+  </a>
+)}
 
+        {/* Back */}
+        <div className='absolute bg-dark inset-0 p-4 border-1 border-white h-90 w-full [transform:rotateY(180deg)] [backface-visibility:hidden]'>
+          <p className='font-ibm text-white opacity-75 text-[9px] text-justify'>
+          {props.dayPicture.explanation}
+          </p>
+        </div>
+      </div>
+    </div>
   {/* Info Container (always visible) */}
   <div className="bg-accent mt-[16px]">
     <div className="p-[12px]">
@@ -66,6 +80,7 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
       )}
     </div>
   </div>
+</div>
 </div>
   );
 };
