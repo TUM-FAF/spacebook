@@ -10,17 +10,17 @@ export const Header: React.FC = (): React.ReactElement => {
     <header className="m-8 flex flex-row items-center">
       <Logo theme={theme as 'dark' | 'light'} />
       
-      <div className="ml-auto text-right text-[12px] space-x-2">
+      <div className="ml-auto text-right text-[12px] space-x-2 ">
       <button
         onClick={() => setTheme('dark')}
-        className={`font-ibm ${isActive('dark') ? 'text-light underline' : 'text-dark'}`}
+        className={` cursor-pointer font-ibm ${isActive('dark') ? 'text-light underline' : 'text-dark'}`}
       >
         Dark Mode
       </button>
       
       <button
         onClick={() => setTheme('light')}
-        className={`font-ibm ${isActive('light') ? 'text-dark underline' : 'text-light'}`}
+        className={`cursor-pointer font-ibm ${isActive('light') ? 'text-dark underline' : 'text-light'}`}
       >
         Light Mode
       </button>
