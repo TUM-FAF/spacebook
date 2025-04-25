@@ -51,7 +51,7 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
     onClick={(e) => e.stopPropagation()}
     className="block h-90 w-full"
   >
-    <p className="font-ibm text-white p-4 border border-white h-full w-full text-center flex items-center justify-center text-[16px]">
+    <p className={`${theme === 'dark' ? ' text-light border-light' : ' text-dark border-dark'}font-ibmp-4 border  h-full w-full text-center flex items-center justify-center text-[16px]`}>
       This is a {props.dayPicture.media_type}. Follow link...
     </p>
   </a>
