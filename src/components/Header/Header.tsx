@@ -7,7 +7,7 @@ export const Header: React.FC = (): React.ReactElement => {
   const isActive = (currentTheme: string): boolean => theme === currentTheme;
 
   return (
-    <header className="m-8 flex flex-row items-center">
+    <header className="mt-8 mr-2 ml-2 flex flex-row items-center">
       <Logo theme={theme as 'dark' | 'light'} />
       
       <div className="ml-auto text-right text-[12px] space-x-2 ">
