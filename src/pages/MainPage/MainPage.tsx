@@ -3,7 +3,7 @@ import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
-import * as s from './MainPage.styled';
+import {useTheme} from '../../components/ThemeContext';
 
 const PICTURES_TO_FETCH = 2;
 const RETRY_DELAY = 1000;
@@ -16,7 +16,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-
+ const { theme } = useTheme();
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
     '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
@@ -157,33 +157,24 @@ export const MainPage: React.FC = (): React.ReactElement => {
   }, []);
 
   return (
-    <s.Container>
+    <div className='font-ibm max-w-[375px] min-w-[375px]'>
       <Header />
       {state.error ? (
-        <div style={{ textAlign: 'center', margin: '2rem 0' }}>
-          <div style={{ fontSize: '1.5rem', color: '#ff6b6b', marginBottom: '1rem' }}>
+        <div className=' font-ibm text-center'>
+          <p className={`${theme === 'dark' ? ' text-light' : ' text-dark'}`}>
             Sorry. <br /> Too many API requests. <br /> Try again later...
-          </div>
-          <button
-            onClick={handleRetry}
-            style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: '#4dabf7',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
+          </p>
+          <button className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center cursor-pointer` } onClick={handleRetry}
           >
             Retry with different API key
           </button>
         </div>
       ) : (
         <div>
-          {state.dayPictures.length === 0 && isLoading ? (
-            <div style={{ fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7' }}>
+          { ate.dayPictures.length === 0 && isLoading ? (
+            <p className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center`}>
               Loading images...
-            </div>
+            </p>
           ) : (
             <InfiniteScroll
               dataLength={state.dayPictures.length}
@@ -191,7 +182,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
               hasMore={true}
               loader={
                 <div
-                  style={{ fontSize: '1.2rem', textAlign: 'center', margin: '2rem 0', color: '#4dabf7' }}
+                className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center mb-2 mt-5`}
                   key="loading"
                 >
                   Loading more images...
@@ -206,6 +197,6 @@ export const MainPage: React.FC = (): React.ReactElement => {
           )}
         </div>
       )}
-    </s.Container>
+    </div>
   );
 };
