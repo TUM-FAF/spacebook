@@ -1,8 +1,11 @@
 import ReactDOM from 'react-dom/client';
 import { MainPage } from './pages';
+import { ThemeProvider } from './components'; // make sure the path is correct
 
-// Create a root element
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
-// Use the render method on the root element
-root.render(<MainPage />);
+root.render(
+  <ThemeProvider>
+    <MainPage />
+  </ThemeProvider>
+);

@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import React, { useState } from 'react';
 import { IDayPicture, INoPicture, isDayPicture } from '../../store';
+import {useTheme} from '../ThemeContext';
 
 interface IProps {
   dayPicture: IDayPicture | INoPicture;
@@ -8,7 +9,7 @@ interface IProps {
 
 export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | null => {
   const [flip, setFlip] = useState(false);
-  
+  const { theme } = useTheme();
   function readableDate(date: string): string {
     return DateTime.fromISO(date).toFormat('dd LLLL yyyy');
   }
@@ -22,7 +23,7 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
   }
 
   return (
-<div>
+<div className={`${theme === 'dark' ? ' text-light' : ' text-dark'}`}>
   <div className='flex flex-col mt-[35px] m-2'>
   <div
       className='h-90 w-90 [perspective:1000px] cursor-pointer'
@@ -57,14 +58,14 @@ export const DayCard: React.FC<IProps> = (props: IProps): React.ReactElement | n
 )}
 
         {/* Back */}
-        <div className='absolute bg-dark inset-0 p-4 border-1 border-white h-90 w-full [transform:rotateY(180deg)] [backface-visibility:hidden]'>
-          <p className='font-ibm text-white opacity-75 text-[9px] text-justify'>
+        <div className={`absolute ${theme === 'dark' ? '  border-light' : '  border-dark'} inset-0 p-4 border-1 h-90 w-full [transform:rotateY(180deg)] [backface-visibility:hidden]`}>
+          <p className={`font-ibm${theme === 'dark' ? ' text-light' : ' text-dark'} opacity-75 text-[9px] text-justify font-medium`}>
           {props.dayPicture.explanation}
           </p>
         </div>
       </div>
     </div>
-  {/* Info Container (always visible) */}
+  {/* Info Container */}
   <div className="bg-accent mt-[16px]">
     <div className="p-[12px]">
       <p className="font-ibm text-dark font-normal text-[16px]">
