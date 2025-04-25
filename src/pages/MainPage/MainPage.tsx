@@ -171,7 +171,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
         </div>
       ) : (
         <div>
-          { ate.dayPictures.length === 0 && isLoading ? (
+          {state.dayPictures.length === 0 && isLoading ? (
             <p className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center`}>
               Loading images...
             </p>
