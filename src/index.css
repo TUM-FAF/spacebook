@@ -2,30 +2,49 @@
 
 @import "tailwindcss";
 
-/* Dark theme */
+/*Dark theme by default*/
 @theme {
-    --font-ibm: "IBM Plex Mono"; 
-    --color-dark-background: #0A0A0C;
-    --color-dark-text: #FFF9F1;
-    --color-light: #FFF9F1;
-    --color-accent: #FF3B01;
-  }
-/* Light theme */
-  @theme {
-    --font-ibm: "IBM Plex Mono"; 
-    --color-light-text: #0A0A0C;
-    --color-dark: #0A0A0C;
-    --color-accent: #FF3B01;
-  }
+  --font-ibm: "IBM Plex Mono";
+  --color-background: #0A0A0C;
+  --color-text-light: #FFF9F1;
+  --color-text-dark: #0A0A0C;
+  --color-accent: #FF3B01;
+}
 
-  body {
-    @apply m-0 p-0 flex justify-center;
-  }
+.light {
+  --color-background: #0A0A0C;
+  --color-text-light: #FFF9F1;
+  --color-text-dark: #0A0A0C;
+}
 
-  body.light {
-    @apply bg-[#FFF9F1] ; 
-  }
-  
-  body.dark {
-    @apply bg-[#121212] ; 
-  }
+.bg-theme {
+  background-color: var(--color-background);
+}
+
+.text-theme {
+  color: var(--color-text);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+body {
+  @apply m-0 p-0 flex justify-center font-ibm;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+body.light {
+  --color-background: #FFF9F1;
+  --color-text: #0A0A0C;
+}
+
+body.dark {
+  --color-background: #0A0A0C;
+  --color-text: #FFF9F1;
+}

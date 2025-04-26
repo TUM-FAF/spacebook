@@ -161,10 +161,10 @@ export const MainPage: React.FC = (): React.ReactElement => {
       <Header />
       {state.error ? (
         <div className=' font-ibm text-center'>
-          <p className={`${theme === 'dark' ? ' text-light' : ' text-dark'}`}>
+          <p className='text-theme text-center'>
             Sorry. <br /> Too many API requests. <br /> Try again later...
           </p>
-          <button className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center cursor-pointer` } onClick={handleRetry}
+          <button className='text-theme text-center cursor-pointer' onClick={handleRetry}
           >
             Retry with different API key
           </button>
@@ -172,7 +172,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
       ) : (
         <div>
           {state.dayPictures.length === 0 && isLoading ? (
-            <p className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center`}>
+            <p className='text-theme text-center cursor-pointer'>
               Loading images...
             </p>
           ) : (
@@ -182,7 +182,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
               hasMore={true}
               loader={
                 <div
-                className={`${theme === 'dark' ? ' text-light' : ' text-dark'} text-center mb-2 mt-5`}
+                className='text-theme text-center  mb-2 mt-5'
                   key="loading"
                 >
                   Loading more images...
