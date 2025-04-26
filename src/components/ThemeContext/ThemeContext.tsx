@@ -1,19 +1,39 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 type ThemeContextType = {
-  theme: string;
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
+  theme: 'light' | 'dark';
+  setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 interface ThemeProviderProps {
-  children: ReactNode; 
+  children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState('dark');
+  const getInitialTheme = (): 'light' | 'dark' => {
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  };
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? 'dark' : 'light');
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -27,7 +47,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children} 
+      {children}
     </ThemeContext.Provider>
   );
 };
