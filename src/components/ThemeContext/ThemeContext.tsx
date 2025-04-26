@@ -7,11 +7,11 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-interface ThemeProviderProps {
+type Props = {
   children: ReactNode;
-}
+};
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeProvider: React.FC<Props> = ({ children }) => {
   const getInitialTheme = (): 'light' | 'dark' => {
     if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
@@ -45,11 +45,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 };
 
 export const useTheme = () => {
