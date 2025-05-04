@@ -3,9 +3,9 @@ import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
-import {useTheme} from '../../components/ThemeContext';
+import { useTheme } from '../../components/ThemeContext';
 
-const PICTURES_TO_FETCH = 2;
+const PICTURES_TO_FETCH = 8; // Increased for desktop view
 const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {
@@ -16,7 +16,9 @@ export const MainPage: React.FC = (): React.ReactElement => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
- const { theme } = useTheme();
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+  const { theme } = useTheme();
+  
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
     '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
@@ -32,6 +34,15 @@ export const MainPage: React.FC = (): React.ReactElement => {
   ];
 
   const [currentKeyIndex, setCurrentKeyIndex] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const isDateInFuture = (date: DateTime): boolean => {
     return date > DateTime.local();
@@ -95,7 +106,10 @@ export const MainPage: React.FC = (): React.ReactElement => {
       let fetchedCount = 0;
       let errorOccurred = false;
 
-      for (let i = 0; i < PICTURES_TO_FETCH; i++) {
+      // Fetch more images at once for desktop view
+      const fetchCount = isDesktop ? PICTURES_TO_FETCH : 2;
+
+      for (let i = 0; i < fetchCount; i++) {
         const dateStr = currentDate.toFormat('yyyy-LL-dd');
 
         try {
@@ -157,14 +171,15 @@ export const MainPage: React.FC = (): React.ReactElement => {
   }, []);
 
   return (
-    <div className='font-ibm max-w-[375px] min-w-[375px]'>
-      <Header />
+    <div className={`font-ibm ${isDesktop ? 'max-w-full px-16' : 'max-w-[375px] min-w-[375px]'}`}>
+      <Header/>
       {state.error ? (
-        <div className=' font-ibm text-center'>
-          <p className='text-theme text-center'>
+        <div className='font-ibm text-center my-8'>
+          <p className='text-theme text-center text-lg'>
             Sorry. <br /> Too many API requests. <br /> Try again later...
           </p>
-          <button className='text-theme text-center cursor-pointer' onClick={handleRetry}
+          <button className='text-theme text-center cursor-pointer mt-4 border border-theme px-4 py-2 hover:bg-theme hover:bg-opacity-10' 
+            onClick={handleRetry}
           >
             Retry with different API key
           </button>
@@ -172,28 +187,59 @@ export const MainPage: React.FC = (): React.ReactElement => {
       ) : (
         <div>
           {state.dayPictures.length === 0 && isLoading ? (
-            <p className='text-theme text-center cursor-pointer'>
+            <p className='text-theme text-center cursor-pointer my-8 text-lg'>
               Loading images...
             </p>
           ) : (
-            <InfiniteScroll
-              dataLength={state.dayPictures.length}
-              next={loadMoreImages}
-              hasMore={true}
-              loader={
-                <div
-                className='text-theme text-center  mb-2 mt-5'
-                  key="loading"
+            <div>
+              {isDesktop && state.dayPictures.length > 0 && (
+                // Featured image banner (first/latest image)
+                <DayCard 
+                  dayPicture={state.dayPictures[0]} 
+                  isFeatured={true} 
+                  previousImages={state.dayPictures.slice(1)}
+                />
+              )}
+              
+              {!isDesktop && (
+                // Mobile view with infinite scroll
+                <InfiniteScroll
+                  dataLength={state.dayPictures.length}
+                  next={loadMoreImages}
+                  hasMore={true}
+                  loader={
+                    <div
+                      className='text-theme text-center mb-2 mt-5'
+                      key="loading"
+                    >
+                      Loading more images...
+                    </div>
+                  }
+                  scrollThreshold={0.9}
                 >
+                  {state.dayPictures.map((dayPicture: IDayPicture, index: number) => (
+                    <DayCard dayPicture={dayPicture} key={`${dayPicture.date}-${index}`} />
+                  ))}
+                </InfiniteScroll>
+              )}
+              
+              {isDesktop && isLoading && (
+                <div className='text-theme text-center my-8'>
                   Loading more images...
                 </div>
-              }
-              scrollThreshold={0.9}
-            >
-              {state.dayPictures.map((dayPicture: IDayPicture, index: number) => (
-                <DayCard dayPicture={dayPicture} key={`${dayPicture.date}-${index}`} />
-              ))}
-            </InfiniteScroll>
+              )}
+              
+              {isDesktop && !isLoading && state.dayPictures.length > 0 && (
+                <div className="mt-4 text-center">
+                  <button 
+                    onClick={() => loadMoreImages()}
+                    className="text-theme border border-theme px-6 py-2 hover:bg-theme hover:bg-opacity-10"
+                  >
+                    Load More Images
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}
