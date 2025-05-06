@@ -15,7 +15,7 @@ export const Header: React.FC = (): React.ReactElement => {
      return () => window.removeEventListener('resize', handleResize);
    }, []);
   return (
-    <header className="mt-8 mr-2 ml-2 flex flex-row items-center">
+    <header className={"mt-8 mr-4 ml-4 flex flex-row items-center"}>
       <Logo theme={theme} />
 
       <div className={`ml-auto text-right space-x-2 ${isDesktop ? 'text-[16px]' : 'text-[12px]'}`}>

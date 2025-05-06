@@ -185,9 +185,9 @@ export const MainPage: React.FC = (): React.ReactElement => {
           </button>
         </div>
       ) : (
-        <div>
+        <div className='w-full flex'>
           {state.dayPictures.length === 0 && isLoading ? (
-            <p className='text-theme text-center cursor-pointer my-8 text-lg'>
+            <p className='text-theme text-center cursor-pointer my-8 '>
               Loading images...
             </p>
           ) : (

@@ -202,8 +202,8 @@ onClick={handleCloseZoom}
   // Mobile version (original layout)
   return (
     <div className="text-theme">
-      <div className="flex flex-col mt-8 m-2">
-        <div className="h-90 w-90 perspective-1000 cursor-pointer" onClick={toggleFlip}>
+      <div className=" flex-col mt-8 m-4">
+        <div className="h-full w-full aspect-square perspective-1000 cursor-pointer" onClick={toggleFlip}>
           <div
             className={`relative h-90 transition-transform duration-1000 [transform-style:preserve-3d] ${
               flip ? '[transform:rotateY(180deg)]' : ''
@@ -247,10 +247,10 @@ onClick={handleCloseZoom}
         </div>
 
         {/* Info Container */}
-        <div className="bg-accent mt-4">
+        <div className="bg-accent mt-6">
           <div className="p-3">
             <p className="font-ibm text-text-dark font-normal text-base">{readableDate(props.dayPicture.date)}</p>
-            <p className="font-ibm text-text-light font-bold text-base mt-1">{props.dayPicture.title}</p>
+            <p className="font-ibm text-text-light font-normal text-base mt-1">{props.dayPicture.title}</p>
             {!!props.dayPicture.copyright && (
               <p className="font-ibm text-white opacity-75 text-xs mt-1">IMAGE CREDIT: {props.dayPicture.copyright}</p>
             )}
