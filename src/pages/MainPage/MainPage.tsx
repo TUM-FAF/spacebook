@@ -5,7 +5,7 @@ import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
 import { useTheme } from '../../components/ThemeContext';
 
-const PICTURES_TO_FETCH = 8; // Increased for desktop view
+const PICTURES_TO_FETCH = 9; // Increased for desktop view
 const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {
@@ -230,10 +230,10 @@ export const MainPage: React.FC = (): React.ReactElement => {
               )}
               
               {isDesktop && !isLoading && state.dayPictures.length > 0 && (
-                <div className="mt-4 text-center">
+                <div className="mt-8 text-center">
                   <button 
                     onClick={() => loadMoreImages()}
-                    className="text-theme border border-theme px-6 py-2 hover:bg-theme hover:bg-opacity-10"
+                    className="text-theme  px-6 py-2 hover:bg-theme hover:bg-opacity-10"
                   >
                     Load More Images
                   </button>
