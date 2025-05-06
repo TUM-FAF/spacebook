@@ -3,9 +3,8 @@ import React, { useReducer, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
-import { useTheme } from '../../components/ThemeContext';
 
-const PICTURES_TO_FETCH = 9; // Increased for desktop view
+const PICTURES_TO_FETCH = 5; // Increased for desktop view
 const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {
@@ -17,8 +16,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-  const { theme } = useTheme();
-  
+
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
     '5wJA3icfv8nK73LTDJvrtE3kYM5tMRBwYIZxdl7e',
@@ -174,33 +172,29 @@ export const MainPage: React.FC = (): React.ReactElement => {
     <div className={`font-ibm ${isDesktop ? 'max-w-full px-16' : 'max-w-[375px] min-w-[375px]'}`}>
       <Header/>
       {state.error ? (
-        <div className='font-ibm text-center my-8'>
-          <p className='text-theme text-center text-lg'>
+        <div className="font-ibm text-center my-8">
+          <p className="text-theme text-center text-lg">
             Sorry. <br /> Too many API requests. <br /> Try again later...
           </p>
-          <button className='text-theme text-center cursor-pointer mt-4 border border-theme px-4 py-2 hover:bg-theme hover:bg-opacity-10' 
+          <button
+            className="text-theme text-center cursor-pointer mt-4 border border-theme px-4 py-2 hover:bg-theme hover:bg-opacity-10"
             onClick={handleRetry}
           >
             Retry with different API key
           </button>
         </div>
       ) : (
-        <div className='w-full flex'>
-          {state.dayPictures.length === 0 && isLoading ? (
-            <p className='text-theme text-center cursor-pointer my-8 '>
-              Loading images...
-            </p>
-          ) : (
+        <div className="w-full flex">
+          {state.dayPictures.length === 0 && isLoading ? null : (
             <div>
               {isDesktop && state.dayPictures.length > 0 && (
                 // Featured image banner (first/latest image)
-                <DayCard 
-                  dayPicture={state.dayPictures[0]} 
-                  isFeatured={true} 
+                <DayCard
+                  dayPicture={state.dayPictures[0]}
+                  isFeatured={true}
                   previousImages={state.dayPictures.slice(1)}
                 />
               )}
-              
               {!isDesktop && (
                 // Mobile view with infinite scroll
                 <InfiniteScroll
@@ -208,10 +202,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
                   next={loadMoreImages}
                   hasMore={true}
                   loader={
-                    <div
-                      className='text-theme text-center mb-2 mt-5'
-                      key="loading"
-                    >
+                    <div className="text-theme text-center mb-2 mt-5" key="loading">
                       Loading more images...
                     </div>
                   }
@@ -223,22 +214,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
                 </InfiniteScroll>
               )}
               
-              {isDesktop && isLoading && (
-                <div className='text-theme text-center my-8'>
-                  Loading more images...
-                </div>
-              )}
-              
-              {isDesktop && !isLoading && state.dayPictures.length > 0 && (
-                <div className="mt-8 text-center">
-                  <button 
-                    onClick={() => loadMoreImages()}
-                    className="text-theme  px-6 py-2 hover:bg-theme hover:bg-opacity-10"
-                  >
-                    Load More Images
-                  </button>
-                </div>
-              )}
+              {isDesktop && !isLoading && <div className="hidden">{void loadMoreImages()}</div>}
             </div>
           )}
         </div>

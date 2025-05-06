@@ -1,39 +1,15 @@
 import { DateTime } from 'luxon';
-import React, { useState, useEffect } from 'react';
-import { IDayPicture, INoPicture, isDayPicture } from '../../store';
+import React, { useState} from 'react';
+import { IDayPicture} from '../../store';
 
-interface IProps {
-  dayPicture: IDayPicture | INoPicture;
-  isFeatured?: boolean;
-  previousImages?: Array<IDayPicture>;
-}
 
 export const GalleryItem: React.FC<{
   image: IDayPicture;
   onSeeMore: (image: IDayPicture) => void;
   isZoomed: boolean;
-}> = ({ image, onSeeMore, isZoomed }) => {
+}> = ({ image, onSeeMore}) => {
   const [showInfo, setShowInfo] = useState(false);
 
-  if (isZoomed) {
-    return (
-      <div className="col-span-1 relative">
-        <img
-          src={image.url}
-          alt={image.title}
-          className="object-cover w-full h-full aspect-square"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 p-4 flex justify-center items-center">
-          <button
-            className="bg-accent text-white py-1 px-3"
-            onClick={() => onSeeMore(image)}
-          >
-            Close Zoom
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
 <div
@@ -42,7 +18,26 @@ export const GalleryItem: React.FC<{
   onMouseLeave={() => setShowInfo(false)}
   onClick={() => onSeeMore(image)}
 >
-  <img src={image.url} alt={image.title} className="aspect-square object-cover" />
+{image.media_type === 'image' ? (
+  <div className="absolute inset-0 [backface-visibility:hidden]">
+    <img
+      className="object-cover h-90 w-full"
+      src={image.url}
+
+    />
+  </div>
+) : image.media_type === 'video' ?(
+  <div className="absolute inset-0 ">
+    <iframe
+      src={image.url}
+      className="w-full h-full"
+      allowFullScreen
+    ></iframe>
+  </div>
+):(
+  <p className=' border-1 border-theme text-center p-4 text-theme content-center aspect-square'> This is another media. Check NASA's official website</p>
+)}
+  <img src={image.url}  className="aspect-square object-cover" />
   <div className="group absolute inset-0 flex flex-col justify-center p-2">
   {/* Background overlay with opacity transition */}
   <div
