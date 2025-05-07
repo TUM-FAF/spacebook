@@ -53,7 +53,7 @@ export const DayCard: React.FC<IProps> = (props): React.ReactElement | null => {
               {props.dayPicture.media_type === 'image' ? (
                 <img className="object-cover aspect-square" src={props.dayPicture.url} alt="NASA Pic" />
               ) : (
-                <iframe src={props.dayPicture.url} className="block w-full" allowFullScreen></iframe>
+                <iframe src={props.dayPicture.url} className="block w-full aspect-square" allowFullScreen></iframe>
               )}
             </div>
           </div>

@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
 
-const PICTURES_TO_FETCH = 5; // Increased for desktop view
+const PICTURES_TO_FETCH = 2; // Increased for desktop view
 const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {

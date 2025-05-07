@@ -48,10 +48,10 @@ export const GalleryItem: React.FC<{
 
   {/* Foreground content that appears only on hover */}
   <div className="relative z-10 hidden group-hover:flex flex-col items-center ">
-    <p className="bg-text-light text-text-dark text-[16px] font-normal p-2">
+    <p className="bg-text-light text-text-dark text-[12px] font-normal p-2">
       {DateTime.fromISO(image.date).toFormat('dd LLL yyyy')}
     </p>
-    <p className="bg-text-light text-text-dark text-[16px] truncate p-3">{image.title}</p>
+    <p className="bg-text-light text-text-dark text-[16px] truncate p-3 w-10">{image.title}</p>
     <button
       className="bg-accent text-text-light text-[18px] px-8 py-2 mt-1 underline"
       onClick={(e) => {
