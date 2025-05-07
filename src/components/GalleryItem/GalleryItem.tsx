@@ -37,7 +37,7 @@ export const GalleryItem: React.FC<{
 ):(
   <p className=' border-1 border-theme text-center p-4 text-theme content-center aspect-square'> This is another media. Check NASA's official website</p>
 )}
-  <img src={image.url}  className="aspect-square object-cover" />
+  
   <div className="group absolute inset-0 flex flex-col justify-center p-2">
   {/* Background overlay with opacity transition */}
   <div
@@ -51,7 +51,7 @@ export const GalleryItem: React.FC<{
     <p className="bg-text-light text-text-dark text-[12px] font-normal p-2">
       {DateTime.fromISO(image.date).toFormat('dd LLL yyyy')}
     </p>
-    <p className="bg-text-light text-text-dark text-[16px] truncate p-3 w-10">{image.title}</p>
+    <p className="bg-text-light text-text-dark text-[16px] truncate p-3">{image.title}</p>
     <button
       className="bg-accent text-text-light text-[18px] px-8 py-2 mt-1 underline"
       onClick={(e) => {
