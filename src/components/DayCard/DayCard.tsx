@@ -2,12 +2,13 @@ import { DateTime } from 'luxon';
 import React, { useState, useEffect } from 'react';
 import { IDayPicture, INoPicture, isDayPicture } from '../../store';
 import { GalleryItem } from '../../components/GalleryItem/GalleryItem';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface IProps {
   dayPicture: IDayPicture | INoPicture;
   isFeatured?: boolean;
   previousImages?: Array<IDayPicture>;
-}
+  }
 
 export const DayCard: React.FC<IProps> = (props): React.ReactElement | null => {
   const [flip, setFlip] = useState(false);
@@ -92,46 +93,38 @@ export const DayCard: React.FC<IProps> = (props): React.ReactElement | null => {
 
         {/* Gallery of previous images */}
         {props.previousImages && props.previousImages.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-[24px] font-normal mb-10">Browse Image Archive</h2>
-            <div className="grid h-full lg:grid-cols-4 gap-4">
-              {props.previousImages.map((image, index) => {
-                const isSelected = selectedImage === image;
-                const selectedIndex = selectedImage ? (props.previousImages ?? []).indexOf(selectedImage) : -1;
-                const selectedRow = Math.floor(selectedIndex / 4);
-                const currentRow = Math.floor(index / 4);
+  <div className="mt-20">
+    <h2 className="text-[24px] font-normal mb-10">Browse Image Archive</h2>
 
-                if (selectedImage && currentRow === selectedRow && !isSelected) {
-                  return null;
-                }
+      <div className="grid h-full lg:grid-cols-4 gap-4">
+        {props.previousImages.map((image, index) => {
+          const isSelected = selectedImage === image;
+          const selectedIndex = selectedImage ? (props.previousImages ?? []).indexOf(selectedImage) : -1;
+          const selectedRow = Math.floor(selectedIndex / 4);
+          const currentRow = Math.floor(index / 4);
 
-                if (isSelected) {
-                  const isImageOnLeft = selectedIndex % 4 < 2;
+          if (selectedImage && currentRow === selectedRow && !isSelected) {
+            return null;
+          }
 
-                  return (
-                    <div key={`${image.date}-${index}`} className="col-span-4 grid grid-cols-4 gap-4">
-                      {isImageOnLeft && (
-                        <div className="col-span-2">
-                          {image.media_type === 'image' ? (
-                            <img src={image.url} alt={image.title} className="w-full object-cover aspect-square" />
-                          ) : image.media_type === 'video' ? (
-                            <iframe src={image.url} className="w-full h-full" allowFullScreen></iframe>
-                          ) : (
-                            <p className="border-1 aspect-square border-theme content-center text-center text-[18px] p-4 ">
-                              {' '}
-                              This is another media. Check NASA's official website{' '}
-                            </p>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Info Section */}
-                      <div className="col-span-2 text-theme flex flex-col justify-between m-8">
-                        <div>
-                          <div className="flex flex-row justify-between">
-                            <p className="font-ibm text-theme text-[22px]">{readableDate(selectedImage.date)}</p>
-                            <button onClick={handleCloseZoom} className="cursor-pointer">
-                              <div className="text-theme">
+          if (isSelected) {
+            const isImageOnLeft = selectedIndex % 4 < 2;
+            return (
+              <div key={`${image.date}-${index}`} className="col-span-4 grid grid-cols-4 gap-4">
+                {isImageOnLeft && (
+                  <div className="col-span-2">
+                    {image.media_type === 'image' ? (
+                      <img src={image.url} alt={image.title} className="w-full object-cover aspect-square" />
+                    ) : (
+                      <iframe src={image.url} className="w-full h-full" allowFullScreen></iframe>
+                    )}
+                  </div>
+                )}
+                <div className="col-span-2 text-theme flex flex-col justify-between m-8">
+                  <div>
+                    <div className="flex flex-row justify-between">
+                      <p className="font-ibm text-theme text-[22px]">{readableDate(selectedImage.date)}</p>
+                      <button onClick={handleCloseZoom} className="cursor-pointer"><div className="text-theme">
                                 <svg
                                   width="22"
                                   height="22"
@@ -147,50 +140,40 @@ export const DayCard: React.FC<IProps> = (props): React.ReactElement | null => {
                                     fill="currentColor"
                                   />
                                 </svg>
-                              </div>
-                            </button>
-                          </div>
-                          <p className="font-ibm text-accent mt-4 text-[24px] font-normal">{selectedImage.title}</p>
-
-                          {!!selectedImage.copyright && (
-                            <p className="text-[16px] opacity-75 mt-4">IMAGE CREDIT: {selectedImage.copyright}</p>
-                          )}
-                          <p className="text-[16px] mt-4">{selectedImage.explanation}</p>
-                        </div>
-                      </div>
-
-                      {/* Image Section (if image is on the right) */}
-                      {!isImageOnLeft && (
-                        <div className="col-span-2">
-                          {image.media_type === 'image' ? (
-                            <img src={image.url} alt={image.title} className="w-full object-cover aspect-square" />
-                          ) : image.media_type === 'video' ? (
-                            <iframe src={image.url} className="w-full h-full" allowFullScreen></iframe>
-                          ) : (
-                            <p className="border-1 aspect-square border-theme content-center text-center p-4 ">
-                              {' '}
-                              This is another media. Check NASA's official website{' '}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                              </div></button>
                     </div>
-                  );
-                }
+                    <p className="font-ibm text-accent mt-4 text-[24px] font-normal">{selectedImage.title}</p>
+                    {!!selectedImage.copyright && (
+                      <p className="text-[16px] opacity-75 mt-4">IMAGE CREDIT: {selectedImage.copyright}</p>
+                    )}
+                    <p className="text-[16px] mt-4">{selectedImage.explanation}</p>
+                  </div>
+                </div>
+                {!isImageOnLeft && (
+                  <div className="col-span-2">
+                    {image.media_type === 'image' ? (
+                      <img src={image.url} alt={image.title} className="w-full object-cover aspect-square" />
+                    ) : (
+                      <iframe src={image.url} className="w-full h-full" allowFullScreen></iframe>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          }
 
-                // Render the regular gallery item
-                return (
-                  <GalleryItem
-                    key={`${image.date}-${index}`}
-                    image={image}
-                    onSeeMore={handleSelectImage}
-                    isZoomed={false}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
+          return (
+            <GalleryItem
+              key={`${image.date}-${index}`}
+              image={image}
+              onSeeMore={handleSelectImage}
+              isZoomed={false}
+            />
+          );
+        })}
+      </div>
+  </div>
+)}
       </div>
     );
   }

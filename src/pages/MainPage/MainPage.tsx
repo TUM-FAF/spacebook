@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect, useState, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { DayCard, Header } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
 
-const PICTURES_TO_FETCH = 2; // Increased for desktop view
+const PICTURES_TO_FETCH = 5;
 const RETRY_DELAY = 1000;
 
 export const MainPage: React.FC = (): React.ReactElement => {
@@ -16,6 +16,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
 
   const API_KEYS: string[] = [
     'fCge8jp6Kn9qJ3c8CdIHKGBPfG4dGzYqmMzGpo9z',
@@ -104,8 +105,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
       let fetchedCount = 0;
       let errorOccurred = false;
 
-      // Fetch more images at once for desktop view
-      const fetchCount = isDesktop ? PICTURES_TO_FETCH : 2;
+      const fetchCount = isDesktop ? PICTURES_TO_FETCH : 5; 
 
       for (let i = 0; i < fetchCount; i++) {
         const dateStr = currentDate.toFormat('yyyy-LL-dd');
@@ -214,7 +214,16 @@ export const MainPage: React.FC = (): React.ReactElement => {
                 </InfiniteScroll>
               )}
               
-              {isDesktop && !isLoading && <div className="hidden">{void loadMoreImages()}</div>}
+              {isDesktop && (
+  <div className="text-center my-4">
+    <button
+      className="border border-theme px-4 py-2 text-theme hover:bg-theme hover:bg-opacity-10"
+      onClick={() => void loadMoreImages()}
+      disabled={isLoading}
+    >
+      {isLoading ? 'Loading...' : 'Load More Images'}
+    </button>
+  </div>)}
             </div>
           )}
         </div>
