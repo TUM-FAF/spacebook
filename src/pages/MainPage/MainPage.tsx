@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import React, { useReducer, useEffect, useState, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { DayCard, Header } from '../../components';
+import { DayCard, Header, DesktopFeaturedCard } from '../../components';
 import { IDayPicture, initialState, mainActions, mainReducer } from '../../store';
 
 const PICTURES_TO_FETCH = 5;
@@ -169,7 +169,7 @@ export const MainPage: React.FC = (): React.ReactElement => {
   }, []);
 
   return (
-    <div className={`font-ibm ${isDesktop ? 'max-w-full px-16' : 'max-w-[375px] min-w-[375px]'}`}>
+    <div className="font-ibm max-w-[375px] min-w-[375px] md:max-w-full md:min-w-0 md:px-16">
       <Header/>
       {state.error ? (
         <div className="font-ibm text-center my-8">
@@ -187,23 +187,23 @@ export const MainPage: React.FC = (): React.ReactElement => {
         <div className="w-full flex">
           {state.dayPictures.length === 0 && isLoading ? null : (
             <div>
-              {isDesktop && state.dayPictures.length > 0 && (
+              {state.dayPictures.length > 0 && (
                 // Featured image banner (first/latest image)
-                <DayCard
+                <div className='hidden md:block mb-5'>
+                <DesktopFeaturedCard
                   dayPicture={state.dayPictures[0]}
                   isFeatured={true}
                   previousImages={state.dayPictures.slice(1)}
                 />
+                </div>
               )}
-              {!isDesktop && (
-                // Mobile view with infinite scroll
+              <div className='block md:hidden'>
                 <InfiniteScroll
                   dataLength={state.dayPictures.length}
                   next={loadMoreImages}
                   hasMore={true}
                   loader={
-                    <div className="text-theme text-center mb-2 mt-5" key="loading">
-                      Loading more images...
+                    <div key="loading">
                     </div>
                   }
                   scrollThreshold={0.9}
@@ -212,19 +212,11 @@ export const MainPage: React.FC = (): React.ReactElement => {
                     <DayCard dayPicture={dayPicture} key={`${dayPicture.date}-${index}`} />
                   ))}
                 </InfiniteScroll>
-              )}
+                </div>
+            
               
-              {isDesktop && (
-  <div className="text-center my-4">
-    <button
-      className="border border-theme px-4 py-2 text-theme hover:bg-theme hover:bg-opacity-10"
-      onClick={() => void loadMoreImages()}
-      disabled={isLoading}
-    >
-      {isLoading ? 'Loading...' : 'Load More Images'}
-    </button>
-  </div>)}
-            </div>
+              
+  </div>
           )}
         </div>
       )}

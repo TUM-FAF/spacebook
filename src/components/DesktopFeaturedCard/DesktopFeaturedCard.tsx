@@ -62,7 +62,7 @@ export const DesktopFeaturedCard: React.FC<IProps> = (props): React.ReactElement
                 </div>
 
                 {!!props.dayPicture.copyright && (
-                  <p className="font-ibm text-theme opacity-75 text-base mt-2">
+                  <p className="font-ibm text-theme opacity-75 text-base mt-4">
                     IMAGE CREDIT: {props.dayPicture.copyright}
                   </p>
                 )}

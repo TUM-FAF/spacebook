@@ -5,20 +5,12 @@ import { Logo } from '../../assets/icons/Logo';
 export const Header: React.FC = (): React.ReactElement => {
   const { theme, setTheme } = useTheme();
   const isActive = (currentTheme: string): boolean => theme === currentTheme;
- const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-   useEffect(() => {
-     const handleResize = () => {
-       setIsDesktop(window.innerWidth >= 768);
-     };
  
-     window.addEventListener('resize', handleResize);
-     return () => window.removeEventListener('resize', handleResize);
-   }, []);
   return (
     <header className={"mt-8 mr-4 ml-4 flex flex-row items-center"}>
       <Logo theme={theme} />
 
-      <div className={`ml-auto text-right space-x-2 ${isDesktop ? 'text-[16px]' : 'text-[12px]'}`}>
+      <div className="ml-auto text-right space-x-2 md:text-[16px] max-sm:text-[12px]">
         <button
           onClick={() => setTheme('dark')}
           className={` cursor-pointer font-ibm ${isActive('dark') ? 'text-dark' : 'opacity-50'}`}
