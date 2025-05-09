@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '../ThemeContext';
 import { Logo } from '../../assets/icons/Logo';
 
 export const Header: React.FC = (): React.ReactElement => {
   const { theme, setTheme } = useTheme();
   const isActive = (currentTheme: string): boolean => theme === currentTheme;
-
+ 
   return (
-    <header className="mt-8 mr-2 ml-2 flex flex-row items-center">
+    <header className={"mt-8 mr-4 ml-4 flex flex-row items-center"}>
       <Logo theme={theme} />
 
-      <div className="ml-auto text-right text-[12px] space-x-2 ">
+      <div className="ml-auto text-right space-x-2 md:text-[16px] max-sm:text-[12px]">
         <button
           onClick={() => setTheme('dark')}
-          className={` cursor-pointer font-ibm ${isActive('dark') ? 'text-light underline' : 'text-dark'}`}
+          className={` cursor-pointer font-ibm ${isActive('dark') ? 'text-dark' : 'opacity-50'}`}
         >
           Dark Mode
         </button>
 
         <button
           onClick={() => setTheme('light')}
-          className={`cursor-pointer font-ibm ${isActive('light') ? 'text-dark underline' : 'text-light'}`}
+          className={`cursor-pointer font-ibm ${isActive('light') ? 'text-dark' : 'opacity-50'}`}
         >
           Light Mode
         </button>
